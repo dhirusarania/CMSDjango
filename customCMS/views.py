@@ -12,9 +12,9 @@ from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
-from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
-    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer
+    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer, StaticComponentsSerializer
 from baseApp.models import Category
 from baseApp.serializers import CategorySerializer
 
@@ -500,6 +500,29 @@ class GetActiveComponents(APIView):
     def put(self, request, pk):
         obj = self.get_object(pk)
         serializer = HomeComponentsSerializer(obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class GetStaticComponents(APIView):
+    def get_object(self):
+        try:
+            return StaticComponents.objects.all()
+        except StaticComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        obj = StaticComponents.objects.all()
+        print(obj)
+        Obj = StaticComponentsSerializer(obj, context={"request": request}, many=True)
+        return Response(Obj.data)
+
+    def put(self, request):
+        obj = self.get_object(pk)
+        serializer = StaticComponentsSerializer(obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

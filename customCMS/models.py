@@ -67,3 +67,14 @@ class HomeComponents(models.Model):
 
     def __str__(self):
         return str(self.key)
+
+class StaticComponents(models.Model):
+    title          = models.CharField(max_length=50 , help_text="Section Title")
+    name           = models.CharField(max_length=50,  help_text="Identifier")
+    content        = models.TextField()
+    button         = models.CharField(max_length=50)
+    button_url     = models.URLField(max_length=250)
+    bgimage        = models.ImageField(upload_to='static_components', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name)

@@ -77,6 +77,8 @@ class StartUp(models.Model):
     featured = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='startup_images', blank=True, null=True)
 
+    pitch = models.TextField(default="")
+
     def __str__(self):
         return self.name
 
