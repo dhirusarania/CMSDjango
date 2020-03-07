@@ -1,5 +1,9 @@
 from rest_framework import serializers
+<<<<<<< Updated upstream
 from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews
+=======
+from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews, ProductTestimonials
+>>>>>>> Stashed changes
 from django.contrib.auth.models import User
 
 
@@ -122,11 +126,30 @@ class StartupSerializerWithProducts(serializers.ModelSerializer):
         fields = ['id', 'name', 'year_founded', 'city', 'state', 'country', 'startup_products']
 
 
+<<<<<<< Updated upstream
 class RatingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProductRatingsAndReviews
         fields = '__all__'
+
+
+class RatingsSerializerWD(serializers.ModelSerializer):
+=======
+
+class RatingsSerializer(serializers.ModelSerializer):
+>>>>>>> Stashed changes
+
+    class Meta:
+        model = ProductRatingsAndReviews
+        fields = '__all__'
+<<<<<<< Updated upstream
+
+        depth = 1
+
+=======
+>>>>>>> Stashed changes
+
 
 
 class RatingsSerializerWD(serializers.ModelSerializer):
@@ -138,6 +161,8 @@ class RatingsSerializerWD(serializers.ModelSerializer):
         depth = 1
 
 
+class ProductTestimonialsSerializer(serializers.ModelSerializer):
 
-
-
+    class Meta:
+        model = ProductTestimonials
+        fields = '__all__'

@@ -1,5 +1,9 @@
 from django.contrib import admin
+<<<<<<< Updated upstream
 from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, UserIp, ProductRatingsAndReviews
+=======
+from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, UserIp, ProductRatingsAndReviews, ProductTestimonials
+>>>>>>> Stashed changes
 
 admin.site.register(UserAdditionalDetails)
 admin.site.register(Category)
@@ -8,3 +12,7 @@ admin.site.register(Product)
 admin.site.register(Updates)
 admin.site.register(UserIp)
 admin.site.register(ProductRatingsAndReviews)
+<<<<<<< Updated upstream
+=======
+admin.site.register(ProductTestimonials)
+>>>>>>> Stashed changes
