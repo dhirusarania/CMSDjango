@@ -77,7 +77,10 @@ class StartUp(models.Model):
     featured = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='startup_images', blank=True, null=True)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     pitch = models.TextField(default="")
@@ -130,6 +133,7 @@ class ProductRatingsAndReviews(models.Model):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 class Pitch_Campaign(models.Model):
     startup = models.ForeignKey(StartUp, on_delete=models.CASCADE)
     ppt_upload = models.FileField(upload_to='ppt_upload/', blank=True, null=True)
@@ -138,6 +142,8 @@ class Pitch_Campaign(models.Model):
     def __str__(self):
         return str(self.startup)
 =======
+=======
+>>>>>>> Stashed changes
 class ProductTestimonials(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     userName = models.CharField(max_length=50)
@@ -146,4 +152,7 @@ class ProductTestimonials(models.Model):
 
     def __str__(self):
         return str(self.product)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes

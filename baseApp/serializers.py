@@ -1,6 +1,10 @@
 from rest_framework import serializers
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews
+=======
+from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews, ProductTestimonials
+>>>>>>> Stashed changes
 =======
 from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews, ProductTestimonials
 >>>>>>> Stashed changes
@@ -127,6 +131,10 @@ class StartupSerializerWithProducts(serializers.ModelSerializer):
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 class RatingsSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -137,6 +145,7 @@ class RatingsSerializer(serializers.ModelSerializer):
 class RatingsSerializerWD(serializers.ModelSerializer):
 =======
 
+<<<<<<< Updated upstream
 class RatingsSerializer(serializers.ModelSerializer):
 >>>>>>> Stashed changes
 
@@ -154,6 +163,10 @@ class RatingsSerializer(serializers.ModelSerializer):
 
 class RatingsSerializerWD(serializers.ModelSerializer):
 
+=======
+class RatingsSerializerWD(serializers.ModelSerializer):
+
+>>>>>>> Stashed changes
     class Meta:
         model = ProductRatingsAndReviews
         fields = '__all__'

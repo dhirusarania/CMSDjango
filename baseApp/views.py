@@ -13,11 +13,19 @@ from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from rest_framework.views import APIView
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews
 from .serializers import CategorySerializer, UserSerializer, UserAdditionalDetailsSerializer, StartupSerializer, \
     PasswordChangeSerializer, ProductSerializer, ProductSerializerWD, DeleteStartupSerializer, \
     UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, UpdateSerializer, UpdateSerializerWD, \
     DeleteUpdateSerializerWD, SocialAuthSerializer, StartupSerializerWithProducts, RatingsSerializer, RatingsSerializerWD
+=======
+from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews, ProductTestimonials
+from .serializers import CategorySerializer, UserSerializer, UserAdditionalDetailsSerializer, StartupSerializer, \
+    PasswordChangeSerializer, ProductSerializer, ProductSerializerWD, DeleteStartupSerializer, \
+    UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, UpdateSerializer, UpdateSerializerWD, \
+    DeleteUpdateSerializerWD, SocialAuthSerializer, StartupSerializerWithProducts, RatingsSerializer, RatingsSerializerWD, ProductTestimonialsSerializer
+>>>>>>> Stashed changes
 =======
 from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews, ProductTestimonials
 from .serializers import CategorySerializer, UserSerializer, UserAdditionalDetailsSerializer, StartupSerializer, \
@@ -36,7 +44,10 @@ from social_core.backends.oauth import BaseOAuth2
 from requests.exceptions import HTTPError
 from rest_framework import filters
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import logging
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -747,9 +758,6 @@ class StartupSearch(generics.ListAPIView):
         return qs
 
 
-
-
-
 @permission_classes((AllowAny,))
 class FeaturedStartupListing(APIView):
     def get_object(self):
@@ -814,6 +822,73 @@ class UserRatingsPutView(APIView):
         except ProductRatingsAndReviews.DoesNotExist:
             raise Http404
 
+<<<<<<< Updated upstream
+@permission_classes((AllowAny,))
+class FeaturedStartupListing(APIView):
+    def get_object(self):
+        try:
+            obn = StartUp.objects.filter(deleted_flag=False)
+            obj = obn.filter(featured=True)
+            return obj
+        except StartUp.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        startup = self.get_object()
+        StartUp = StartupSerializerWithDepth(startup, many=True, context={"request": request})
+        return Response(StartUp.data)
+
+
+class StartupListingWithProducts(APIView):
+    def get_object(self, pk):
+        try:
+            obj = StartUp.objects.filter(added_by=pk).filter(deleted_flag=False)
+            return obj
+        except StartUp.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        startup = self.get_object(pk)
+        StartUp = StartupSerializerWithProducts(startup, many=True, context={"request": request})
+        return Response(StartUp.data)
+
+
+class RatingsPostView(viewsets.ViewSet):
+    def ratings_list(self, request):
+        queryset = ProductRatingsAndReviews.objects.all()
+        serializer = RatingsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = RatingsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RatingsPutView(APIView):
+    def get_object(self, pk):
+        try:
+            return ProductRatingsAndReviews.objects.get(user=pk)
+        except ProductRatingsAndReviews.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = RatingsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+
+class UserRatingsPutView(APIView):
+    def get_object(self, pk):
+        try:
+            return ProductRatingsAndReviews.objects.get(id=pk)
+        except ProductRatingsAndReviews.DoesNotExist:
+            raise Http404
+
+=======
+>>>>>>> Stashed changes
     def get(self, request, pk):
         obj = self.get_object(pk)
         Obj = RatingsSerializer(obj, context={"request": request})

@@ -1,6 +1,10 @@
 from rest_framework import serializers
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents
+=======
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
+>>>>>>> Stashed changes
 =======
 from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
 >>>>>>> Stashed changes
@@ -62,11 +66,14 @@ class HomeComponentsSerializer(serializers.ModelSerializer):
         model = HomeComponents
         fields = '__all__'
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 class StaticComponentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StaticComponents
         fields = '__all__'
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

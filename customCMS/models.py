@@ -68,6 +68,7 @@ class HomeComponents(models.Model):
     def __str__(self):
         return str(self.key)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 class StaticComponents(models.Model):
     title          = models.CharField(max_length=50 , help_text="Section Title")
@@ -79,5 +80,7 @@ class StaticComponents(models.Model):
 
     def __str__(self):
         return str(self.name)
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

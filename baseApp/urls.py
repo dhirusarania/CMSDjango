@@ -41,6 +41,11 @@ urlpatterns = [
     path('all_ratings', views.UserProductReviews.as_view()),
     path('startup_search', views.StartupSearch.as_view()),
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    path('testimonial_post', views.TestimonialPost.as_view({'get': 'testimonial_list'})),
+    path('product_testimonials/<int:pk>', views.ProductTestimonialsList.as_view()),
+>>>>>>> Stashed changes
 =======
     path('testimonial_post', views.TestimonialPost.as_view({'get': 'testimonial_list'})),
     path('product_testimonials/<int:pk>', views.ProductTestimonialsList.as_view()),

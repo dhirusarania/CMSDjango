@@ -13,9 +13,15 @@ from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
     CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer, StaticComponentsSerializer
+=======
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
+from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
+    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer
+>>>>>>> Stashed changes
 =======
 from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
@@ -511,6 +517,7 @@ class GetActiveComponents(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
 @permission_classes((AllowAny,))
@@ -534,5 +541,7 @@ class GetStaticComponents(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
