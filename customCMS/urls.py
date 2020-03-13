@@ -32,4 +32,6 @@ urlpatterns = [
     path('get_inactive_home_components/<int:pk>', views.GetInactiveComponents.as_view()),
     path('get_active_home_components/<int:pk>', views.GetActiveComponents.as_view()),
     path('get_static_components', views.GetStaticComponents.as_view()),
+    path('edit_static_components/<int:pk>', views.EditStaticComponents.as_view()),
+    path('create_static_components', views.CreateStaticComponents.as_view()),
 ]

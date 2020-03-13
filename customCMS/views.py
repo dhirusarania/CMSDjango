@@ -488,7 +488,7 @@ class GetInactiveComponents(APIView):
 class GetActiveComponents(APIView):
     def get_object(self, pk):
         try:
-            return HomeComponents.objects.get(pk=2)
+            return HomeComponents.objects.get(pk=pk)
         except HomeComponents.DoesNotExist:
             raise Http404
 
@@ -527,3 +527,14 @@ class GetStaticComponents(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@permission_classes((AllowAny,))
+class EditStaticComponents(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StaticComponents.objects.all()
+    serializer_class = StaticComponentsSerializer
+    lookup_field = 'pk'
+
+@permission_classes((AllowAny,))
+class CreateStaticComponents(generics.CreateAPIView):
+    queryset = StaticComponents.objects.all()
+    serializer_class = StaticComponentsSerializer
