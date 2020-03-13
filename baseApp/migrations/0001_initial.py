@@ -80,7 +80,6 @@ class Migration(migrations.Migration):
                 ('update_video', models.FileField(blank=True, null=True, upload_to='product_videos/')),
                 ('added_date', models.DateField(default=datetime.datetime.now)),
                 ('updated_date', models.DateField(blank=True, null=True)),
-                ('deleted_flag', models.BooleanField(default=False)),
                 ('added_by', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='update_added_by', to=settings.AUTH_USER_MODEL)),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='baseApp.Product')),
                 ('updated_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
