@@ -12,9 +12,9 @@ from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
-from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
-    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer
+    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer
 from baseApp.models import Category
 from baseApp.serializers import CategorySerializer
 
@@ -460,3 +460,47 @@ class GetContactForm(APIView):
         obj = self.get_object(pk)
         Obj = ContactFormSerializer(obj, context={"request": request})
         return Response(Obj.data)
+
+
+@permission_classes((AllowAny,))
+class GetInactiveComponents(APIView):
+    def get_object(self, pk):
+        try:
+            return HomeComponents.objects.get(pk=1)
+        except HomeComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = HomeComponentsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = HomeComponentsSerializer(obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class GetActiveComponents(APIView):
+    def get_object(self, pk):
+        try:
+            return HomeComponents.objects.get(pk=2)
+        except HomeComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = HomeComponentsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = HomeComponentsSerializer(obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

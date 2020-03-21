@@ -59,3 +59,11 @@ class ContactUsForm(models.Model):
 
     def __str__(self):
         return str(self.title)
+
+
+class HomeComponents(models.Model):
+    key = models.CharField(max_length=50)
+    value = models.TextField()
+
+    def __str__(self):
+        return str(self.key)

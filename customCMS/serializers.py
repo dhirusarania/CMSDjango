@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
 from baseApp.models import Category
 
 
@@ -49,4 +49,11 @@ class ContactFormSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ContactUsForm
+        fields = '__all__'
+
+
+class HomeComponentsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HomeComponents
         fields = '__all__'

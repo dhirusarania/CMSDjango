@@ -33,4 +33,13 @@ urlpatterns = [
     path('editProductUpdate/<int:pk>', views.EditProductUpdate.as_view()),
     path('oauth/login/', views.SocialLoginView.as_view()),
     path('user_count', views.UserCount.as_view()),
+    path('featured_startups', views.FeaturedStartupListing.as_view()),
+    path('startupwithproducts/<int:pk>', views.StartupListingWithProducts.as_view()),
+    path('post_ratings', views.RatingsPostView.as_view({'get': 'ratings_list'})),
+    path('update_ratings/<int:pk>', views.RatingsPutView.as_view()),
+    path('user_update_ratings/<int:pk>', views.UserRatingsPutView.as_view()),
+    path('all_ratings', views.UserProductReviews.as_view()),
+    path('startup_search', views.StartupSearch.as_view()),
+    path('testimonial_post', views.TestimonialPost.as_view({'get': 'testimonial_list'})),
+    path('product_testimonials/<int:pk>', views.ProductTestimonialsList.as_view()),
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, UserAdditionalDetails, StartUp, Product, Updates
+from .models import Category, UserAdditionalDetails, StartUp, Product, Updates, ProductRatingsAndReviews, ProductTestimonials
 from django.contrib.auth.models import User
 
 
@@ -53,7 +53,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
-        depth = 1
+        depth = 2
 
 
 class ProductSerializerWD(serializers.ModelSerializer):
@@ -114,7 +114,34 @@ class SocialAuthSerializer(serializers.Serializer):
     access_token = serializers.CharField(max_length=4096, required=True, trim_whitespace=True)
 
 
+class StartupSerializerWithProducts(serializers.ModelSerializer):
+    startup_products = ProductSerializerWD(many=True, read_only=True)
+
+    class Meta:
+        model = StartUp
+        fields = ['id', 'name', 'year_founded', 'city', 'state', 'country', 'startup_products']
 
 
 
+class RatingsSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = ProductRatingsAndReviews
+        fields = '__all__'
+
+
+
+class RatingsSerializerWD(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductRatingsAndReviews
+        fields = '__all__'
+
+        depth = 1
+
+
+class ProductTestimonialsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductTestimonials
+        fields = '__all__'

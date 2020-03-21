@@ -74,6 +74,9 @@ class StartUp(models.Model):
     partnerships_associations = models.CharField(max_length=500, blank=True, null=True)
     funding_round = models.IntegerField(default=0, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    featured = models.BooleanField(default=False)
+    thumbnail = models.ImageField(upload_to='startup_images', blank=True, null=True)
+    pitch = models.TextField(default="")
 
     def __str__(self):
         return self.name
@@ -85,7 +88,7 @@ class Product(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     deleted_flag = models.BooleanField(default=False)
-    startup_name = models.ForeignKey(StartUp, on_delete=models.PROTECT)
+    startup_name = models.ForeignKey(StartUp, related_name='startup_products', on_delete=models.PROTECT)
     stage = models.IntegerField()
     product_name = models.CharField(max_length=100)
     description = models.TextField()
@@ -106,6 +109,27 @@ class Updates(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     deleted_flag = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.product)
+
+
+class ProductRatingsAndReviews(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    ratings = models.IntegerField(default=0)
+    reviews = models.TextField(blank=True, null=True)
+    added_date = models.DateField(default=datetime.now)
+
+    def __str__(self):
+        return str(self.product) + " - " + str(self.user)
+
+
+class ProductTestimonials(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    userName = models.CharField(max_length=50)
+    userImage = models.ImageField(upload_to='testimonial_images/')
+    testimonial = models.TextField()
 
     def __str__(self):
         return str(self.product)
