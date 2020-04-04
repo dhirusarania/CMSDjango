@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='startup',
-            name='featured',
-            field=models.BooleanField(default=False),
-        ),
+
     ]

@@ -10,12 +10,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='HomeComponents',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('key', models.CharField(max_length=50)),
-                ('value', models.TextField()),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='HomeComponents',
+        #     fields=[
+        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('key', models.CharField(max_length=50)),
+        #         ('value', models.TextField()),
+        #     ],
+        # ),
     ]

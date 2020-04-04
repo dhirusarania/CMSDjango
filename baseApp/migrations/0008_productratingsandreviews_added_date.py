@@ -11,9 +11,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='productratingsandreviews',
-            name='added_date',
-            field=models.DateField(default=datetime.datetime.now),
-        ),
+        # migrations.AddField(
+        #     model_name='productratingsandreviews',
+        #     name='added_date',
+        #     field=models.DateField(default=datetime.datetime.now),
+        # ),
     ]

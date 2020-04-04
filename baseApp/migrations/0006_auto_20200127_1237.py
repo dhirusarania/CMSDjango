@@ -18,14 +18,14 @@ class Migration(migrations.Migration):
             name='startup_name',
             field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='startup_products', to='baseApp.StartUp'),
         ),
-        migrations.CreateModel(
-            name='ProductRatingsAndReviews',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ratings', models.IntegerField(default=0)),
-                ('reviews', models.TextField()),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='baseApp.Product')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='ProductRatingsAndReviews',
+        #     fields=[
+        #         ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('ratings', models.IntegerField(default=0)),
+        #         ('reviews', models.TextField()),
+        #         ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='baseApp.Product')),
+        #         ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+        #     ],
+        # ),
     ]
