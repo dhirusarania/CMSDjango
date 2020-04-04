@@ -38,6 +38,16 @@ class StartupSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
+class StartupFeaturedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = StartUp
+        fields = [
+            'featured'
+        ]
+
+
 class PasswordChangeSerializer(serializers.ModelSerializer):
 
     class Meta:

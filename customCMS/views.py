@@ -12,9 +12,9 @@ from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
-from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
-    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, HomeComponentsSerializer
+    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, StaticComponentsWebsiteSerializer, HomeComponentsSerializer, StaticComponentsSerializer, DeleteHomeComponentsSerializer
 from baseApp.models import Category
 from baseApp.serializers import CategorySerializer
 
@@ -29,7 +29,9 @@ def admin_login(request):
         return Response({'error': 'Please provide both username and password'},
                         status=HTTP_400_BAD_REQUEST)
     user = authenticate(username=username, password=password)
-    if user.is_superuser:
+    if user is None:
+        return Response({'status': 401, 'error': 'error'}, status=HTTP_400_BAD_REQUEST)
+    elif user.is_superuser:
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key, 'id': user.id, 'username': user.username}, status=HTTP_200_OK)
 
@@ -38,11 +40,13 @@ def admin_login(request):
 class HomeCMSView(viewsets.ViewSet):
     def home_cms_list(self, request):
         queryset = HomeCMS.objects.all()
-        serializer = HomeSerializer(queryset, many=True, context={"request": request})
+        serializer = HomeSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = HomeSerializer(data=request.data, context={"request": request})
+        serializer = HomeSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -53,8 +57,16 @@ class HomeCMSView(viewsets.ViewSet):
 class ActvatedHomeCMSView(viewsets.ViewSet):
     def activated_list(self, request):
         queryset = HomeCMS.objects.filter(active=True)
-        serializer = HomeSerializer(queryset, many=True, context={"request": request})
+        serializer = HomeSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
+
+
+@permission_classes((AllowAny,))
+class DeleteHomeCMSView(generics.DestroyAPIView):
+    queryset = HomeCMS.objects.all()
+    serializer_class = HomeComponentsSerializer
+    lookup_fields = 'pk'
 
 
 class EditHomeCMS(APIView):
@@ -71,7 +83,8 @@ class EditHomeCMS(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = HomeSerializer(obj, data=request.data, context={"request": request})
+        serializer = HomeSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -106,11 +119,13 @@ class ActiveHomeCMS(APIView):
 class CategoryCMSView(viewsets.ViewSet):
     def category_cms_list(self, request):
         queryset = CategoryCMS.objects.all()
-        serializer = CategoryCMSSerializer(queryset, many=True, context={"request": request})
+        serializer = CategoryCMSSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = CategoryCMSSerializer(data=request.data, context={"request": request})
+        serializer = CategoryCMSSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -131,7 +146,8 @@ class EditCategoryCMS(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = CategoryCMSSerializer(obj, data=request.data, context={"request": request})
+        serializer = CategoryCMSSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -142,7 +158,8 @@ class EditCategoryCMS(APIView):
 class ActvatedCategoryCMSView(viewsets.ViewSet):
     def activated_list(self, request):
         queryset = CategoryCMS.objects.filter(active=True)
-        serializer = CategoryCMSSerializer(queryset, many=True, context={"request": request})
+        serializer = CategoryCMSSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -173,11 +190,13 @@ class ActiveCategoryCMS(APIView):
 class ContactCMSView(viewsets.ViewSet):
     def contact_cms_list(self, request):
         queryset = ContactCMS.objects.all()
-        serializer = ContactSerializer(queryset, many=True, context={"request": request})
+        serializer = ContactSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ContactSerializer(data=request.data, context={"request": request})
+        serializer = ContactSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -198,7 +217,8 @@ class EditContactCMS(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = ContactSerializer(obj, data=request.data, context={"request": request})
+        serializer = ContactSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -209,7 +229,8 @@ class EditContactCMS(APIView):
 class ActivatedContactCMSView(viewsets.ViewSet):
     def activated_list(self, request):
         queryset = ContactCMS.objects.filter(active=True)
-        serializer = ContactSerializer(queryset, many=True, context={"request": request})
+        serializer = ContactSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -240,11 +261,13 @@ class ActiveContactCMS(APIView):
 class AboutCMSView(viewsets.ViewSet):
     def about_cms_list(self, request):
         queryset = AboutCMS.objects.all()
-        serializer = AboutSerializer(queryset, many=True, context={"request": request})
+        serializer = AboutSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = AboutSerializer(data=request.data, context={"request": request})
+        serializer = AboutSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -265,7 +288,8 @@ class EditAboutCMS(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = AboutSerializer(obj, data=request.data, context={"request": request})
+        serializer = AboutSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -276,7 +300,8 @@ class EditAboutCMS(APIView):
 class ActivatedAboutCMSView(viewsets.ViewSet):
     def activated_list(self, request):
         queryset = AboutCMS.objects.filter(active=True)
-        serializer = AboutSerializer(queryset, many=True, context={"request": request})
+        serializer = AboutSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -307,11 +332,13 @@ class ActiveAboutCMS(APIView):
 class CategoryView(viewsets.ViewSet):
     def category_cms_list(self, request):
         queryset = Category.objects.all()
-        serializer = CategorySerializer(queryset, many=True, context={"request": request})
+        serializer = CategorySerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = CategorySerializer(data=request.data, context={"request": request})
+        serializer = CategorySerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -332,7 +359,8 @@ class EditCategory(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = CategorySerializer(obj, data=request.data, context={"request": request})
+        serializer = CategorySerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -353,7 +381,8 @@ class CategoryStatus(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = CategoryStatusSerializer(obj, data=request.data, context={"request": request})
+        serializer = CategoryStatusSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -363,11 +392,13 @@ class CategoryStatus(APIView):
 class FooterCMSView(viewsets.ViewSet):
     def footer_list(self, request):
         queryset = FooterCMS.objects.all()
-        serializer = FooterSerializer(queryset, many=True, context={"request": request})
+        serializer = FooterSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = FooterSerializer(data=request.data, context={"request": request})
+        serializer = FooterSerializer(
+            data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -388,7 +419,8 @@ class EditFooterCMS(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = FooterSerializer(obj, data=request.data, context={"request": request})
+        serializer = FooterSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -399,7 +431,8 @@ class EditFooterCMS(APIView):
 class ActivatedFooterCMSView(viewsets.ViewSet):
     def activated_list(self, request):
         queryset = FooterCMS.objects.filter(active=True)
-        serializer = FooterSerializer(queryset, many=True, context={"request": request})
+        serializer = FooterSerializer(
+            queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 
@@ -441,7 +474,8 @@ class EditContactForm(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = ContactFormSerializer(obj, data=request.data, context={"request": request})
+        serializer = ContactFormSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -477,7 +511,8 @@ class GetInactiveComponents(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = HomeComponentsSerializer(obj, data=request.data, context={"request": request})
+        serializer = HomeComponentsSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -485,10 +520,10 @@ class GetInactiveComponents(APIView):
 
 
 @permission_classes((AllowAny,))
-class GetActiveComponents(APIView):
+class GetInactiveComponents(APIView):
     def get_object(self, pk):
         try:
-            return HomeComponents.objects.get(pk=2)
+            return HomeComponents.objects.get(pk=1)
         except HomeComponents.DoesNotExist:
             raise Http404
 
@@ -499,8 +534,109 @@ class GetActiveComponents(APIView):
 
     def put(self, request, pk):
         obj = self.get_object(pk)
-        serializer = HomeComponentsSerializer(obj, data=request.data, context={"request": request})
+        serializer = HomeComponentsSerializer(
+            obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class GetActiveComponents(APIView):
+    def get_object(self, pk):
+        try:
+            return HomeComponents.objects.get(pk=pk)
+        except HomeComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = HomeComponentsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = HomeComponentsSerializer(
+            obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class GetStaticComponents(APIView):
+    def get_object(self):
+        try:
+            return StaticComponents.objects.all()
+        except StaticComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        obj = StaticComponents.objects.all()
+        print(obj)
+        Obj = StaticComponentsSerializer(
+            obj, context={"request": request}, many=True)
+        return Response(Obj.data)
+
+    def put(self, request):
+        obj = self.get_object(pk)
+        serializer = StaticComponentsSerializer(
+            obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@permission_classes((AllowAny,))
+class GetStaticComponentsWebsite(APIView):
+    def get_object(self):
+        try:
+            return StaticComponents.objects.all()
+        except StaticComponents.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        obj = StaticComponents.objects.all()
+        print(obj)
+        Obj = StaticComponentsWebsiteSerializer(
+            obj, context={"request": request}, many=True)
+        return Response(Obj.data)
+
+    def put(self, request):
+        obj = self.get_object(pk)
+        serializer = StaticComponentsWebsiteSerializer(
+            obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class EditStaticComponents(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StaticComponents.objects.all()
+    serializer_class = StaticComponentsSerializer
+    lookup_field = 'pk'
+
+
+@permission_classes((AllowAny,))
+class CreateStaticComponents(generics.CreateAPIView):
+    queryset = StaticComponents.objects.all()
+    serializer_class = StaticComponentsSerializer
+
+
+
+@permission_classes((AllowAny,))
+class deleteContact(generics.RetrieveDestroyAPIView):
+    queryset = ContactCMS.objects.all()
+    serializer_class = ContactSerializer
+    lookup_fields = "id"
+
+
+@permission_classes((AllowAny,))
+class delete_footer(generics.RetrieveDestroyAPIView):
+    queryset = FooterCMS.objects.all()
+    serializer_class = FooterSerializer
+    lookup_fields = "id"

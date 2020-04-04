@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+import environ
+from typing import List
+base = os.path.dirname(os.path.dirname(__file__))
+
+
+environ.Env.read_env(os.path.join(base, '.env'))
+
+env = environ.Env(
+    ALLOWED_HOSTS=(list, [])
+)
+
+ALLOWED_HOSTS: List[str] = env('ALLOWED_HOSTS')
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,10 +33,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pz7w#lo0e975_pfv4wc$2q4rw6ns4@0q2%r$kzune_qxpz-3(j'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ["103.228.113.9", "localhost", "www.ft500.in", "ft500.in", '127.0.0.1']
 
@@ -38,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'baseApp',
+    'django_filters',
     'customCMS',
     'rest_framework',
     'rest_framework.authtoken',
@@ -96,19 +110,23 @@ AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_FACEBOOK_KEY = '677942272737411'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'b3f3b1dcc2c066ba2a166c7701176be6'
 
+# Facebook
+
+SOCIAL_AUTH_FACEBOOK_KEY = env('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = env('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': 'id, name, email'
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '552327637976-cor1r6rm7be2li5nchvs28fhv53buuiv.apps.googleusercontent.com'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'sJ32rrgE5f_Q41_vXoHvV0vu'
+# Google
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
@@ -135,15 +153,15 @@ WSGI_APPLICATION = 'CMS.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangocms',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
+    'default': env.db(),
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 
 # Password validation
@@ -184,10 +202,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+CUSTOM_MEDIA_DIR = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+MEDIA_ROOT = os.path.join(CUSTOM_MEDIA_DIR, 'media')
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://localhost:3333",
+    "http://localhost:5000",
+    "http://localhost:3002",
 ]

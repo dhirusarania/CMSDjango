@@ -76,6 +76,7 @@ class StartUp(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     featured = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='startup_images', blank=True, null=True)
+    pitch_file = models.FileField(upload_to='pitch_images', blank=True, null=True)
     pitch = models.TextField(default="")
 
     def __str__(self):
@@ -89,12 +90,14 @@ class Product(models.Model):
     updated_date = models.DateField(blank=True, null=True)
     deleted_flag = models.BooleanField(default=False)
     startup_name = models.ForeignKey(StartUp, related_name='startup_products', on_delete=models.PROTECT)
-    stage = models.IntegerField()
+    stage = models.IntegerField(blank=True, null=True)
     product_name = models.CharField(max_length=100)
-    description = models.TextField()
-    product_app_link = models.CharField(max_length=200)
-    active_users = models.IntegerField()
+    description = models.TextField(blank=True, null=True)
+    product_app_link = models.CharField(max_length=200, blank=True, null=True)
+    active_users = models.IntegerField(blank=True, null=True)
     product_video = models.FileField(upload_to='product_videos/', blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    isVideo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.product_name

@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews, ProductTestimonials
 from .serializers import CategorySerializer, UserSerializer, UserAdditionalDetailsSerializer, StartupSerializer, \
     PasswordChangeSerializer, ProductSerializer, ProductSerializerWD, DeleteStartupSerializer, \
-    UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, UpdateSerializer, UpdateSerializerWD, \
+    UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, StartupFeaturedSerializer, UpdateSerializer, UpdateSerializerWD, \
     DeleteUpdateSerializerWD, SocialAuthSerializer, StartupSerializerWithProducts, RatingsSerializer, RatingsSerializerWD, ProductTestimonialsSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 import os
@@ -716,13 +716,17 @@ class UserProductReviews(generics.ListAPIView):
     queryset = ProductRatingsAndReviews.objects.all()
     serializer_class = RatingsSerializerWD
 
+import django_filters.rest_framework
 
 @permission_classes((AllowAny,))
 class StartupSearch(generics.ListAPIView):
     queryset = StartUp.objects.all()
     serializer_class = StartupSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'description']
+    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
+    search_fields = ['$name', 'description']
+    filterset_fields = ['category']
+
+    
 
     def get_queryset(self):
          qs = StartUp.objects.all()
@@ -757,3 +761,10 @@ class ProductTestimonialsList(APIView):
         obj = self.get_object(pk)
         Obj = ProductTestimonialsSerializer(obj, many=True, context={"request": request})
         return Response(Obj.data)
+
+
+@permission_classes((AllowAny,))
+class MakeFeatured(generics.RetrieveUpdateAPIView):
+    queryset = StartUp.objects.all()
+    serializer_class = StartupFeaturedSerializer
+    lookup_fields = "id"
