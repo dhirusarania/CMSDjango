@@ -214,9 +214,11 @@ MEDIA_ROOT = os.path.join(CUSTOM_MEDIA_DIR, 'media')
 CUSTOM_MEDIA_DIR = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 MEDIA_ROOT = os.path.join(CUSTOM_MEDIA_DIR, 'media')
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://localhost:3333",
-    "http://localhost:5000",
-    "http://localhost:3002",
-]
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:3000",
+#     "http://localhost:3333",
+#     "http://localhost:5000",
+#     "http://localhost:3002",
+# ]
+
+CORS_ORIGIN_ALLOW_ALL=True
