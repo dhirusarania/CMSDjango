@@ -1,0 +1,33 @@
+[{
+        "model": "customCMS.HomeComponents",
+        "pk": 1,
+        "fields": {
+            "key": "Home Components",
+            "value": "[{ 'name': 'Recent Listings', 'id': 3000 }, { 'name': 'Category', 'id': 3001 }, { 'name': 'Featured Listings', 'id': 3002 }]"
+        }
+    },
+    {
+        "model": "customCMS.HomeComponents",
+        "pk": 2,
+        "fields": {
+            "key": "Active Components",
+            "value": "[]"
+        }
+    },
+    {
+        "model": "customCMS.HomeComponents",
+        "pk": 3,
+        "fields": {
+            "key": "About",
+            "value": "[]"
+        }
+    },
+    {
+        "model": "customCMS.HomeComponents",
+        "pk": 4,
+        "fields": {
+            "key": "Category",
+            "value": "[]"
+        }
+    }
+]

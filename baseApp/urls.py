@@ -40,4 +40,7 @@ urlpatterns = [
     path('user_update_ratings/<int:pk>', views.UserRatingsPutView.as_view()),
     path('all_ratings', views.UserProductReviews.as_view()),
     path('startup_search', views.StartupSearch.as_view()),
+    path('testimonial_post', views.TestimonialPost.as_view({'get': 'testimonial_list'})),
+    path('product_testimonials/<int:pk>', views.ProductTestimonialsList.as_view()),
+    path('make_featured/<int:pk>', views.MakeFeatured.as_view()),
 ]

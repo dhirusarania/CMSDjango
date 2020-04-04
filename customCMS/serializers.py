@@ -58,8 +58,24 @@ class HomeComponentsSerializer(serializers.ModelSerializer):
         model = HomeComponents
         fields = '__all__'
 
+class DeleteHomeComponentsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HomeCMS
+        fields = ['deleted_flag']
+
+
 class StaticComponentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StaticComponents
         fields = '__all__'
+        
+
+
+class StaticComponentsWebsiteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = StaticComponents
+        fields = '__all__'
+       

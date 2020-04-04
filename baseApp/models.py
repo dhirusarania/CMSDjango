@@ -76,7 +76,7 @@ class StartUp(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     featured = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to='startup_images', blank=True, null=True)
-
+    pitch_file = models.FileField(upload_to='pitch_images', blank=True, null=True)
     pitch = models.TextField(default="")
 
     def __str__(self):
@@ -90,12 +90,14 @@ class Product(models.Model):
     updated_date = models.DateField(blank=True, null=True)
     deleted_flag = models.BooleanField(default=False)
     startup_name = models.ForeignKey(StartUp, related_name='startup_products', on_delete=models.PROTECT)
-    stage = models.IntegerField()
+    stage = models.IntegerField(blank=True, null=True)
     product_name = models.CharField(max_length=100)
-    description = models.TextField()
-    product_app_link = models.CharField(max_length=200)
-    active_users = models.IntegerField()
+    description = models.TextField(blank=True, null=True)
+    product_app_link = models.CharField(max_length=200, blank=True, null=True)
+    active_users = models.IntegerField(blank=True, null=True)
     product_video = models.FileField(upload_to='product_videos/', blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    isVideo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.product_name
@@ -126,10 +128,11 @@ class ProductRatingsAndReviews(models.Model):
         return str(self.product) + " - " + str(self.user)
 
 
-class Pitch_Campaign(models.Model):
-    startup = models.ForeignKey(StartUp, on_delete=models.CASCADE)
-    ppt_upload = models.FileField(upload_to='ppt_upload/', blank=True, null=True)
-    image_or_video_upload = models.FileField(upload_to='pitch_video_upload/', blank=True, null=True)
+class ProductTestimonials(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    userName = models.CharField(max_length=50)
+    userImage = models.ImageField(upload_to='testimonial_images/')
+    testimonial = models.TextField()
 
     def __str__(self):
-        return str(self.startup)
+        return str(self.product)

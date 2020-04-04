@@ -12,11 +12,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from rest_framework.views import APIView
-from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews
+from .models import Category, UserAdditionalDetails, StartUp, Product, UserIp, Updates, ProductRatingsAndReviews, ProductTestimonials
 from .serializers import CategorySerializer, UserSerializer, UserAdditionalDetailsSerializer, StartupSerializer, \
     PasswordChangeSerializer, ProductSerializer, ProductSerializerWD, DeleteStartupSerializer, \
-    UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, UpdateSerializer, UpdateSerializerWD, \
-    DeleteUpdateSerializerWD, SocialAuthSerializer, StartupSerializerWithProducts, RatingsSerializer, RatingsSerializerWD
+    UserLogOutSerializer, DeleteProductSerializer, StartupSerializerWithDepth, StartupFeaturedSerializer, UpdateSerializer, UpdateSerializerWD, \
+    DeleteUpdateSerializerWD, SocialAuthSerializer, StartupSerializerWithProducts, RatingsSerializer, RatingsSerializerWD, ProductTestimonialsSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 import os
 from datetime import datetime
@@ -27,7 +27,6 @@ from social_core.exceptions import MissingBackend, AuthTokenError, AuthForbidden
 from social_core.backends.oauth import BaseOAuth2
 from requests.exceptions import HTTPError
 from rest_framework import filters
-import logging
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -739,9 +738,138 @@ class StartupSearch(generics.ListAPIView):
 
 
 
+@permission_classes((AllowAny,))
+class FeaturedStartupListing(APIView):
+    def get_object(self):
+        try:
+            obn = StartUp.objects.filter(deleted_flag=False)
+            obj = obn.filter(featured=True)
+            return obj
+        except StartUp.DoesNotExist:
+            raise Http404
+
+    def get(self, request):
+        startup = self.get_object()
+        StartUp = StartupSerializerWithDepth(startup, many=True, context={"request": request})
+        return Response(StartUp.data)
 
 
+class StartupListingWithProducts(APIView):
+    def get_object(self, pk):
+        try:
+            obj = StartUp.objects.filter(added_by=pk).filter(deleted_flag=False)
+            return obj
+        except StartUp.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        startup = self.get_object(pk)
+        StartUp = StartupSerializerWithProducts(startup, many=True, context={"request": request})
+        return Response(StartUp.data)
 
 
+class RatingsPostView(viewsets.ViewSet):
+    def ratings_list(self, request):
+        queryset = ProductRatingsAndReviews.objects.all()
+        serializer = RatingsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = RatingsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RatingsPutView(APIView):
+    def get_object(self, pk):
+        try:
+            return ProductRatingsAndReviews.objects.get(user=pk)
+        except ProductRatingsAndReviews.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = RatingsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+
+class UserRatingsPutView(APIView):
+    def get_object(self, pk):
+        try:
+            return ProductRatingsAndReviews.objects.get(id=pk)
+        except ProductRatingsAndReviews.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = RatingsSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = RatingsSerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class UserProductReviews(generics.ListAPIView):
+    queryset = ProductRatingsAndReviews.objects.all()
+    serializer_class = RatingsSerializerWD
+
+import django_filters.rest_framework
+
+@permission_classes((AllowAny,))
+class StartupSearch(generics.ListAPIView):
+    queryset = StartUp.objects.all()
+    serializer_class = StartupSerializer
+    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend]
+    search_fields = ['$name', 'description']
+    filterset_fields = ['category']
+
+    
+
+    def get_queryset(self):
+         qs = StartUp.objects.all()
+         print(qs.query)
+         return qs
+
+
+class TestimonialPost(viewsets.ViewSet):
+    def testimonial_list(self, request):
+        queryset = ProductTestimonials.objects.all()
+        serializer = ProductTestimonialsSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ProductTestimonialsSerializer(data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes((AllowAny,))
+class ProductTestimonialsList(APIView):
+    def get_object(self, pk):
+        try:
+            obj = ProductTestimonials.objects.filter(product=pk)
+            return obj
+        except ProductTestimonials.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = ProductTestimonialsSerializer(obj, many=True, context={"request": request})
+        return Response(Obj.data)
+
+
+@permission_classes((AllowAny,))
+class MakeFeatured(generics.RetrieveUpdateAPIView):
+    queryset = StartUp.objects.all()
+    serializer_class = StartupFeaturedSerializer
+    lookup_fields = "id"

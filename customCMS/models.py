@@ -3,9 +3,13 @@ from django.db import models
 
 class HomeCMS(models.Model):
     title = models.CharField(max_length=100)
-    header_img = models.ImageField(upload_to='home_images', blank=True, null=True)
+    header_img = models.ImageField(
+        upload_to='home_images', blank=True, null=True)
     header_text_1 = models.CharField(max_length=500, blank=True, null=True)
     header_text_2 = models.CharField(max_length=500, blank=True, null=True)
+    header_text_3 = models.CharField(max_length=500, blank=True, null=True)
+    site_color = models.CharField(max_length=10, blank=True, null=True)
+    logo = models.ImageField(upload_to='home_images', blank=True, null=True)
     active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -14,7 +18,8 @@ class HomeCMS(models.Model):
 
 class CategoryCMS(models.Model):
     title = models.CharField(max_length=100)
-    background_image = models.ImageField(upload_to='category_images', blank=True, null=True)
+    background_image = models.ImageField(
+        upload_to='category_images', blank=True, null=True)
     active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -37,7 +42,8 @@ class ContactCMS(models.Model):
 class AboutCMS(models.Model):
     title = models.CharField(max_length=100)
     about_info = models.TextField()
-    about_image = models.ImageField(upload_to='about_images', blank=True, null=True)
+    about_image = models.ImageField(
+        upload_to='about_images', blank=True, null=True)
     active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -68,13 +74,16 @@ class HomeComponents(models.Model):
     def __str__(self):
         return str(self.key)
 
+
 class StaticComponents(models.Model):
-    title          = models.CharField(max_length=50 , help_text="Section Title")
-    name           = models.CharField(max_length=50,  help_text="Identifier")
-    content        = models.TextField()
-    button         = models.CharField(max_length=50)
-    button_url     = models.URLField(max_length=250)
-    bgimage        = models.ImageField(upload_to='static_components', blank=True, null=True)
+    title = models.TextField(blank=True, null=True)
+    name = models.TextField(blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+    button = models.TextField(blank=True, null=True)
+    bgcolor = models.TextField(blank=True, null=True)
+    button_url = models.TextField(blank=True, null=True)
+    bgimage = models.ImageField(
+        upload_to='static_components', blank=True, null=True)
 
     def __str__(self):
         return str(self.name)
