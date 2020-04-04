@@ -29,5 +29,13 @@
             "key": "Category",
             "value": "[]"
         }
+    },
+    {
+        "model": "customCMS.ContactUsForm",
+        "pk": 1,
+        "fields": {
+            "title": "Contact Form",
+            "form": "[]"
+        }
     }
 ]

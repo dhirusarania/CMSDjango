@@ -11,6 +11,8 @@ class HomeCMS(models.Model):
     site_color = models.CharField(max_length=10, blank=True, null=True)
     logo = models.ImageField(upload_to='home_images', blank=True, null=True)
     active = models.BooleanField(default=False)
+    website_name = models.CharField(max_length=500, blank=True, null=True)
+    privacy_policy = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return str(self.title)
