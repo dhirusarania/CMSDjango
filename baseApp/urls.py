@@ -43,4 +43,5 @@ urlpatterns = [
     path('testimonial_post', views.TestimonialPost.as_view({'get': 'testimonial_list'})),
     path('product_testimonials/<int:pk>', views.ProductTestimonialsList.as_view()),
     path('make_featured/<int:pk>', views.MakeFeatured.as_view()),
+    path('get_count', views.getAboutMetrics.as_view()),
 ]

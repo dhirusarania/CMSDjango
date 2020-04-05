@@ -27,6 +27,7 @@ from social_core.exceptions import MissingBackend, AuthTokenError, AuthForbidden
 from social_core.backends.oauth import BaseOAuth2
 from requests.exceptions import HTTPError
 from rest_framework import filters
+from django.db.models import Count
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -498,7 +499,7 @@ class UpdatePost(viewsets.ViewSet):
 class UpdatesByProduct(APIView):
     def get_object(self, pk):
         try:
-            obj = Updates.objects.filter(product=pk).filter(deleted_flag=False)
+            obj = Updates.objects.filter(product=pk).filter(deleted_flag=False).order_by('-pk')
             return obj
         except Updates.DoesNotExist:
             raise Http404
@@ -873,3 +874,34 @@ class MakeFeatured(generics.RetrieveUpdateAPIView):
     queryset = StartUp.objects.all()
     serializer_class = StartupFeaturedSerializer
     lookup_fields = "id"
+
+
+
+from customCMS.models import CategoryCMS   
+
+@permission_classes((AllowAny,))
+class getAboutMetrics(APIView):
+    def get(self, request, format=None):  
+        response_data = {}
+
+        listings = StartUp.objects.count()
+
+        user_count = User.objects.filter(is_superuser = False, is_staff = False).count()
+
+        user_count = User.objects.filter(is_superuser = False, is_staff = False).count()
+
+        category = Category.objects.filter(deleted_flag = False).count()
+
+        response_data['listing'] = listings
+        response_data['users'] = user_count
+        response_data['category'] = category
+            
+
+        
+
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+
+
+
