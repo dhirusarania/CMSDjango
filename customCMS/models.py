@@ -76,6 +76,17 @@ class HomeComponents(models.Model):
     def __str__(self):
         return str(self.key)
 
+class ContactModule(models.Model):
+    value = models.TextField(default="{}")
+
+
+    #timestamps
+    created_date        = models.DateTimeField(auto_now_add=True)
+    modified_date       = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.value)
+
 
 class StaticComponents(models.Model):
     title = models.TextField(blank=True, null=True)

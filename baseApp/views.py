@@ -54,20 +54,25 @@ def user_signin(request):
         return Response({'error': 'Please provide both username and password'},
                         status=HTTP_400_BAD_REQUEST)
     user = authenticate(username=username, password=password)
-    token, _ = Token.objects.get_or_create(user=user)
-    ip_obj = UserIp()
-    ip_obj.user = user
-    ip_obj.user_ip = get_client_ip(request)
-    ip_obj.save()
-    user_obj = UserAdditionalDetails.objects.get(user=user)
-    user_obj.login_status = True
-    user_obj.last_login_ip = get_client_ip(request)
-    user_obj.save()
-    users_obj = User.objects.get(username=user)
-    users_obj.last_login = datetime.now()
-    users_obj.save()
-    return Response({'token': token.key, 'id': user.id, 'username': user.username},
-                    status=HTTP_200_OK)
+    if user is not None:
+        token, _ = Token.objects.get_or_create(user=user)
+        ip_obj = UserIp()
+        ip_obj.user = user
+        ip_obj.user_ip = get_client_ip(request)
+        ip_obj.save()
+        user_obj = UserAdditionalDetails.objects.get(user=user)
+        user_obj.login_status = True
+        user_obj.last_login_ip = get_client_ip(request)
+        user_obj.save()
+        users_obj = User.objects.get(username=user)
+        users_obj.last_login = datetime.now()
+        users_obj.save()
+        return Response({'token': token.key, 'id': user.id, 'username': user.username},
+                        status=HTTP_200_OK)
+
+    else:
+        return Response({'error': 'Please provide both username and password'},
+                        status=HTTP_400_BAD_REQUEST)
 
 
 @csrf_exempt

@@ -12,9 +12,9 @@ from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
-from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents
+from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents, ContactModule
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
-    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, StaticComponentsWebsiteSerializer, HomeComponentsSerializer, StaticComponentsSerializer, DeleteHomeComponentsSerializer
+    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, StaticComponentsWebsiteSerializer, ContactUSSerializer, HomeComponentsSerializer, StaticComponentsSerializer, DeleteHomeComponentsSerializer
 from baseApp.models import Category
 from baseApp.serializers import CategorySerializer
 
@@ -639,3 +639,13 @@ class delete_footer(generics.RetrieveDestroyAPIView):
     queryset = FooterCMS.objects.all()
     serializer_class = FooterSerializer
     lookup_fields = "id"
+
+@permission_classes((AllowAny,))
+class storecontact(generics.ListCreateAPIView):
+    queryset = ContactModule.objects.all()
+    serializer_class = ContactUSSerializer
+
+@permission_classes((AllowAny,))
+class getcontact(generics.ListAPIView):
+    queryset = ContactModule.objects.all()
+    serializer_class = ContactUSSerializer

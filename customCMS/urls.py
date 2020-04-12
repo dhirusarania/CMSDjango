@@ -38,4 +38,6 @@ urlpatterns = [
     path('edit_static_components/<int:pk>', views.EditStaticComponents.as_view()),
     path('create_static_components', views.CreateStaticComponents.as_view()),
     path('deleteContact/<int:pk>', views.deleteContact.as_view()),
+    path('storecontact', views.storecontact.as_view()),
+    path('getcontact', views.getcontact.as_view()),
 ]
