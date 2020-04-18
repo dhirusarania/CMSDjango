@@ -38,6 +38,13 @@ class CategoryStatusSerializer(serializers.ModelSerializer):
         fields = ['deleted_flag']
 
 
+class CategoryHomeStatusSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ['home_active']
+
+
 class FooterSerializer(serializers.ModelSerializer):
 
     class Meta:

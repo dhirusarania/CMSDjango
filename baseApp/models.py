@@ -47,6 +47,8 @@ class Category(models.Model):
     updated_by = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
     updated_date = models.DateField(blank=True, null=True)
     deleted_flag = models.BooleanField(default=False)
+    home_active = models.BooleanField(default=False)
+    logo = models.ImageField(upload_to='category_images', blank=True, null=True)
 
     def __str__(self):
         return self.category

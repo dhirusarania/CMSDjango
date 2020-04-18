@@ -14,7 +14,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework import generics, status, viewsets
 from .models import HomeCMS, CategoryCMS, ContactCMS, AboutCMS, FooterCMS, ContactUsForm, HomeComponents, StaticComponents, ContactModule
 from .serializers import HomeSerializer, CategoryCMSSerializer, ContactSerializer, AboutSerializer, \
-    CategoryStatusSerializer, FooterSerializer, ContactFormSerializer, StaticComponentsWebsiteSerializer, ContactUSSerializer, HomeComponentsSerializer, StaticComponentsSerializer, DeleteHomeComponentsSerializer
+    CategoryStatusSerializer, CategoryHomeStatusSerializer, FooterSerializer, ContactFormSerializer, StaticComponentsWebsiteSerializer, ContactUSSerializer, HomeComponentsSerializer, StaticComponentsSerializer, DeleteHomeComponentsSerializer
 from baseApp.models import Category
 from baseApp.serializers import CategorySerializer
 
@@ -382,6 +382,28 @@ class CategoryStatus(APIView):
     def put(self, request, pk):
         obj = self.get_object(pk)
         serializer = CategoryStatusSerializer(
+            obj, data=request.data, context={"request": request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CategoryHomeStatus(APIView):
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        Obj = CategoryHomeStatusSerializer(obj, context={"request": request})
+        return Response(Obj.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serializer = CategoryHomeStatusSerializer(
             obj, data=request.data, context={"request": request})
         if serializer.is_valid():
             serializer.save()

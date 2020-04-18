@@ -24,6 +24,7 @@ urlpatterns = [
     path('cms_category', views.CategoryView.as_view({'get': 'category_cms_list'})),
     path('edit_category/<int:pk>', views.EditCategory.as_view()),
     path('category_status/<int:pk>', views.CategoryStatus.as_view()),
+    path('category_home_status/<int:pk>', views.CategoryHomeStatus.as_view()),
     path('footer_cms', views.FooterCMSView.as_view({'get': 'footer_list'})),
     path('activated_footer_cms', views.ActivatedFooterCMSView.as_view({'get': 'activated_list'})),
     path('edit_footer_cms/<int:pk>', views.EditFooterCMS.as_view()),

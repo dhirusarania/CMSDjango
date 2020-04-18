@@ -55,6 +55,11 @@ class AboutCMS(models.Model):
 class FooterCMS(models.Model):
     title = models.CharField(max_length=100)
     about_us = models.TextField()
+    facebook = models.URLField(max_length=250, null=True, blank=True)
+    twitter = models.URLField(max_length=250, null=True, blank=True)
+    google = models.URLField(max_length=250, null=True, blank=True)
+    pinterest = models.URLField(max_length=250, null=True, blank=True)
+    youtube = models.URLField(max_length=250, null=True, blank=True)
     active = models.BooleanField(default=False)
 
     def __str__(self):
